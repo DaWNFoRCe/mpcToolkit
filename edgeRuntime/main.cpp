@@ -309,7 +309,7 @@ int main(int argc, const char ** argv)
     for (int i=0; i<1; i++) {
         openShares=engine->syncGlobal(localOpenShares);
         response = engine->reconstructShares(localOpenShares);//*(ranBin)
-        //response = engine->reconstructShares(localOpenShares);
+        response = engine->reconstructShares(localOpenShares);
     }
   
     //printing information process
