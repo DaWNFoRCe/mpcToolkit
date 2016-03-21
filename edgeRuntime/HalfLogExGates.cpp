@@ -21,6 +21,7 @@ namespace Applications
         HalfLogExGates::HalfLogExGates()
         {
             this->engine_=NULL;
+	     int a=0;
         };
         HalfLogExGates::HalfLogExGates(SmcEngines::ShamirSharesEngine * engine)
         {
