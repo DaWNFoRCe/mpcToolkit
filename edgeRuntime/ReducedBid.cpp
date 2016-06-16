@@ -28,7 +28,7 @@ namespace Applications
                 this->id_= NULL;
                 this->price_=NULL;
                 this->quantity_=NULL;
-
+                
             };
             
             //initialization constructor
@@ -37,7 +37,7 @@ namespace Applications
                 this->id_= id_;
                 this->price_=price;
                 this->quantity_=quantity;
-
+                
             };
             
             //get player id
@@ -52,7 +52,7 @@ namespace Applications
                 this->id_=id_;
             };
             
-       
+            
             //get player price
             StandardShare * ReducedBid::getPrice()
             {
@@ -77,11 +77,11 @@ namespace Applications
                 this->quantity_=quantity;
             };
             
-    
+            
             
             ReducedBid *ReducedBid::clone()
             {
-                return new ReducedBid(this->id_->clone(), this->price_->clone(), this->quantity_->clone());
+                return new Bids::ReducedBid();//new ReducedBid(this->id_->clone(), this->price_->clone(), this->quantity_->clone());
             };
             
             int ReducedBid::secureExchange(Shares::StandardShare * auth, IExchangable* a, IExchangable *b, SmcEngines::ShamirSharesEngine *engine)
@@ -108,7 +108,31 @@ namespace Applications
                 a_l->setPrice(engine->substractTo(a_l->getPrice(), difference));
                 b_l->setPrice(engine->addTo(b_l->getPrice(), difference));
                 delete difference;
+                
+                return 1;
+            };
+            
+            int ReducedBid::unsafeExchange(IExchangable* a, IExchangable *b)
+            {
+                ReducedBid * a_l = (ReducedBid*)a;
+                ReducedBid * b_l = (ReducedBid*)b;
+                
+                
+                Shares::StandardShare * aux= a_l->getId();
+                a_l->setId(b_l->getId());
+                b_l->setId(aux);
+                
 
+                
+                aux= a_l->getPrice();
+                a_l->setPrice(b_l->getPrice());
+                b_l->setPrice(aux);
+                
+                aux= a_l->getQuantity();
+                a_l->setQuantity(b_l->getQuantity());
+                b_l->setQuantity(aux);
+                
+                
                 return 1;
             };
             
@@ -117,7 +141,7 @@ namespace Applications
                 delete this->id_;
                 delete this->quantity_;
                 delete this->price_;
-
+                
                 
             };
             

@@ -115,6 +115,8 @@ namespace Applications
                 
                 int secureExchange(Shares::StandardShare * auth, IExchangable* a, IExchangable *b, SmcEngines::ShamirSharesEngine * engine);
                 
+                int unsafeExchange( IExchangable* a, IExchangable *b);
+                
                 /**
                  @brief Destroyer. Eliminates all  Shares on the bid. If the Shares depend on other references it is recommended to create copies for the Bids.
                  */

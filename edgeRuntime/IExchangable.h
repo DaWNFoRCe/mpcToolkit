@@ -30,6 +30,7 @@ namespace Applications
                 
                 virtual int secureExchange(Shares::StandardShare * auth, IExchangable* a, IExchangable *b, SmcEngines::ShamirSharesEngine *engine)=0;
                 
+                virtual int unsafeExchange(IExchangable* a, IExchangable *b)=0;
                 virtual ~IExchangable(){};
             };
         };

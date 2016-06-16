@@ -99,6 +99,8 @@ namespace Applications
                 return new StandardBid(this->id_->clone(), this->market_->clone(), this->price_->clone(), this->quantity_->clone());
             };
             
+            
+            
             int StandardBid::secureExchange(Shares::StandardShare * auth, IExchangable* a, IExchangable *b, SmcEngines::ShamirSharesEngine *engine)
             {
                 StandardBid * a_l= (StandardBid *)a;
@@ -132,6 +134,11 @@ namespace Applications
                 b_l->setPrice(engine->addTo(b_l->getPrice(), difference));
                 delete difference;
                 
+                return 1;
+            };
+            
+            int StandardBid::unsafeExchange( IExchangable* a, IExchangable *b)
+            {
                 return 1;
             };
             

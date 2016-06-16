@@ -1,13 +1,13 @@
 //
-//  ReducedBid.h
+//  GeneralMarketBid.h
 //  edgeRuntime
 //
-//  Created by Abdelrahaman Aly on 1/21/15.
+//  Created by Abdelrahaman Aly on 6/9/16.
 //
 //
 
-#ifndef __edgeRuntime__ReducedBid__
-#define __edgeRuntime__ReducedBid__
+#ifndef GeneralMarketBid_h
+#define GeneralMarketBid_h
 
 //Generic Headers
 #include <stdio.h>
@@ -23,14 +23,17 @@ namespace Applications
     {
         namespace Bids
         {
-            class ReducedBid: public IExchangable
+            class GeneralMarketBid:public IExchangable
             {
                 
             private:
                 
                 Shares::StandardShare * id_;
+                Utils::List<Shares::StandardShare> * supplier_;
                 Shares::StandardShare * price_;
                 Shares::StandardShare * quantity_;
+                Shares::StandardShare * demand_;
+                //state variables for extended use - do not use if is not the correct configuration
                 
             public:
                 
@@ -45,7 +48,7 @@ namespace Applications
                  <li>Build Exceptions for non compatible data
                  </ul>
                  */
-                ReducedBid();
+                GeneralMarketBid();
                 
                 /**
                  * @brief Parametrize Constructor
@@ -58,8 +61,7 @@ namespace Applications
                  <li>Build Exceptions for non compatible data
                  </ul>
                  */
-                ReducedBid(Shares::StandardShare *id_, Shares::StandardShare * price, Shares::StandardShare * quantity);
-                
+                GeneralMarketBid(Shares::StandardShare *id_,  Utils::List<Shares::StandardShare> * supplier, Shares::StandardShare * price, Shares::StandardShare * quantity, Shares::StandardShare * demand);
                 
                 /**
                  @brief Simple Getter
@@ -72,6 +74,18 @@ namespace Applications
                  @param unique id share of the bid
                  */
                 void setId(Shares::StandardShare * id_);
+                
+                /**
+                 @brief Simple Getter
+                 @return  origin market in share form of the bid
+                 */
+                Utils::List<Shares::StandardShare> *  getSupplier();
+                
+                /**
+                 @brief Simple Setter
+                 @param origin market in share of the bid
+                 */
+                void setSupplier(Utils::List<Shares::StandardShare> * supplier);
                 
                 /**
                  @brief Simple Getter
@@ -97,18 +111,30 @@ namespace Applications
                  */
                 void setQuantity(Shares::StandardShare * quantity);
                 
+                /**
+                 @brief Simple Getter
+                 @return  demand in share form of the bid
+                 */
+                Shares::StandardShare  * getDemand();
                 
-                ReducedBid *clone();
+                /**
+                 @brief Simple Setter
+                 @param demand in share of the bid
+                 */
+                void setDemand(Shares::StandardShare * demand);
+                
+                
+                GeneralMarketBid * clone();
                 
                 int secureExchange(Shares::StandardShare * auth, IExchangable* a, IExchangable *b, SmcEngines::ShamirSharesEngine * engine);
                 
                 int unsafeExchange( IExchangable* a, IExchangable *b);
-                /**
-                 @brief Destroyer. Eliminates all  Shares on the bid. If the Shares depend on other references it is recommended to create copies for the Bids.
-                 */
-                ~ReducedBid();
+                ~GeneralMarketBid();
+                
             };
         };
     };
 };
-#endif /* defined(__edgeRuntime__ReducedBid__) */
+
+#endif /* GeneralMarketBid_h */
+

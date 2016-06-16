@@ -384,8 +384,7 @@ namespace SmcEngines
         ZZ_p zp=conv<ZZ_p>(power(conv<ZZ>(conv<ZZ_p>(1)/conv<ZZ_p>(2)),l));
         //std::cout<<"l:"<< l<<"zp: "<< zp<<"\n"; //
         Shares::StandardShare * rcontent=this->multiplyTo(this->substract(z, zMod2l),conv<long>(zp));//conv<long>(-1*lp2)
-        //std::cout<<"l:"<< l<<"rcontent "<< rcontent->getValue()<<"\n";
-        // std::cout<<"l:"<< l<<"rcontent "<< this->reconstructShare( rcontent)<<"\n";
+   
         
         Utilities::ShareUtil::destroyList(rBit);
         delete rSub;
@@ -1345,9 +1344,7 @@ namespace SmcEngines
         {
             Shares::StandardShare *a_aux= this->add(a, p2l);
             Shares::StandardShare *b_aux= this->add(b, p2l);
-            if (pb==0) {
-                std::cout<< "problem out of the blue";
-            }
+
             response=this->greaterThanlBitsShares(a_aux, b_aux,pa,pb, this->l_);
             delete a_aux;
             delete b_aux;
@@ -1399,21 +1396,21 @@ namespace SmcEngines
         return result;
     };
     
-    //1-ltz(-a) : a<=0
+    //1-ltz(-a) : a<=b
     Shares::StandardShare * ShamirSharesEngine::lessEqualThanCatrinaModShares(Shares::StandardShare * a, Shares::StandardShare * b)
     {
         Shares::StandardShare * c = this->substract(b, a);
-        c= this->substractTo(1, c);
         Shares::StandardShare * result = this->lessThanZeroCatrinaModShares(c);
+        result= this->substractTo(1, result);
         delete c;
         return result;
     };
-    //1-ltz(a) : a<=0
+    //1-ltz(a) : a>=b
     Shares::StandardShare * ShamirSharesEngine::greaterEqualThanCatrinaModShares(Shares::StandardShare * a, Shares::StandardShare * b)
     {
         Shares::StandardShare * c = this->substract(a, b);
-        c= this->substractTo(1, c);
         Shares::StandardShare * result = this->lessThanZeroCatrinaModShares(c);
+        result= this->substractTo(1, result);
         delete c;
         return result;
     };
