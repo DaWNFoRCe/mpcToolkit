@@ -220,7 +220,7 @@ namespace Listeners
     {
         if (SharesListener::listener_==NULL) 
         {
-            SharesListener::listener_= new SharesListener::SharesListener(player,players);
+	  SharesListener::listener_ = new SharesListener(player,players);
         }
         return SharesListener::listener_;
     };

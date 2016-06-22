@@ -12,7 +12,6 @@
 
 //Library Headers
 #include <cstdlib> 
-#include <Carbon/Carbon.h>
 #include <sys/wait.h>
 #include <cstdlib>
 

@@ -15,7 +15,7 @@
 
 //Library Headers
 #include <cstdlib> 
-#include <Carbon/Carbon.h>
+
 
 //Custom Headers
 #include "StandardShare.h"
