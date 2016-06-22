@@ -17,7 +17,7 @@
 #include "GeneralMarketBid.h"
 #include "StandardShare.h"
 #include "AuctionResponse.h"
-
+#include "GeneralAuctionResponse.h"
 #include "List.h"
 #include "Matrix.h"
 
@@ -41,7 +41,7 @@ namespace Applications
             GeneralMarketAuction(Utils::List<GeneralMarketBid> * bids, Utils::List<Shares::StandardShare> * suppliers, SmcEngines::ShamirSharesEngine * engine);
             Utils::List<GeneralMarketBid> * permuteBids(Utils::List<GeneralMarketBid> * bids);
             int quickSortBids(Utils::List<GeneralMarketBid> * bids);
-            Utils::List<ReducedBid> * optimizeAuction();
+            Response::GeneralAuctionResponse * optimizeAuction();
             
         };
     };

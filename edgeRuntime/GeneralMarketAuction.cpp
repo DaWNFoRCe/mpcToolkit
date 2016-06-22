@@ -14,7 +14,7 @@
 #include "GeneralMarketBid.h"
 #include "ReducedBid.h"
 #include "GeneralMarketBid.h"
-#include "AuctionResponse.h"
+#include "GeneralAuctionResponse.h"
 #include "List.h"
 #include "Matrix.h"
 #include "BidUtil.h"
@@ -127,7 +127,7 @@ namespace Applications
         };
         
         
-        Utils::List<ReducedBid> * GeneralMarketAuction::optimizeAuction()
+        Response::GeneralAuctionResponse * GeneralMarketAuction::optimizeAuction()
         {
             std::cout<<"Process Started"<<"\n";
             //build default data
@@ -173,11 +173,25 @@ namespace Applications
                 //pop current bid analyzed
                 GeneralMarketBid * aux = localBids->pop();
                 
+
                 Shares::StandardShare * c= this->engine_->lessThanCatrinaModShares(acumulate_delta, delta);
                 
-                clearance_price = this->engine_->add(this->engine_->multiplyTo(this->engine_->multiplyTo(this->engine_->substractScalar(1, aux->getDemand()), c), this->engine_->substract(aux->getPrice(), clearance_price)),clearance_price);
+                //Secure Operation ->Clearance Price
+                Shares::StandardShare * substraction =this->engine_->substract(aux->getPrice(), clearance_price);
+                Shares::StandardShare * multiplication =this->engine_->multiplyTo(this->engine_->multiplyTo(this->engine_->substractScalar(1, aux->getDemand()), c),substraction );
                 
-                clearance_volume = this->engine_->add(this->engine_->multiplyTo(this->engine_->multiplyTo(this->engine_->substractScalar(1, aux->getDemand()), c), aux->getQuantity()),clearance_volume);
+                clearance_price = this->engine_->addTo(clearance_price, multiplication);
+                
+                delete multiplication;
+                delete substraction;
+                
+                //Secure Operation ->Volume Price
+                multiplication=this->engine_->multiplyTo(this->engine_->multiplyTo(this->engine_->substractScalar(1, aux->getDemand()), c), aux->getQuantity());
+                
+                clearance_volume = this->engine_->addTo(clearance_volume, multiplication);
+                
+                delete multiplication;
+                
                 
                 for (int i =0; i< this->suppliers_->getLength(); i++)
                 {
@@ -224,13 +238,7 @@ namespace Applications
             Permutations::BatcherMergeSort * permutator = new Permutations::BatcherMergeSort(this->engine_);
             
             Utils::List<Bids::IExchangable> * nPermutation =  permutator->permute(permutation);
-            std::cout<<"Clearance Price: "<< engine_->presentShare(clearance_price)<<"\n";
-            std::cout<<"Clearance Volume: "<< engine_->presentShare(clearance_volume)<<"\n";
-            for (int i=0; i< suppliers_->getLength(); i++)
-            {
-                std::cout<<"Supplier Capacity Si "<<i<<": "<< engine_->presentShare(suppliers_capacity->get(i))<<"\n";
-                std::cout<<"Supplier Demand Si "<<i<<": "<< engine_->presentShare(suppliers_demand->get(i))<<"\n";
-            }
+
             std::cout<<"Start Bids Allocation \n";
             //delete A;
             A->clear();
@@ -246,7 +254,11 @@ namespace Applications
             delete minus_one;
 
             
-            return A;
+            
+            Response::GeneralAuctionResponse * response = new Response::GeneralAuctionResponse(clearance_price,clearance_volume,suppliers_capacity,A);
+                                                                                            
+            
+            return response;
         };
 
         
