@@ -15,16 +15,18 @@ namespace Applications
         {
             GeneralAuctionResponse::GeneralAuctionResponse()
             {
-                this->suppliers_=NULL;
+                this->suppliersCapacity_=NULL;
+                this->suppliersDemand_=NULL;
                 this->bids_=NULL;
                 this->clearance_volume_=NULL;
                 this->clearance_price_=NULL;
                 return;
             };
             
-            GeneralAuctionResponse::GeneralAuctionResponse(Shares::StandardShare * clearance_price ,Shares::StandardShare * clearance_volume,Utils::List<Shares::StandardShare> * suppliers, Utils::List<Bids::ReducedBid> * bids)
+            GeneralAuctionResponse::GeneralAuctionResponse(Shares::StandardShare * clearance_price ,Shares::StandardShare * clearance_volume,Utils::List<Shares::StandardShare> * suppliersDemand, Utils::List<Shares::StandardShare> * suppliersCapacity, Utils::List<Bids::ReducedBid> * bids)
             {
-                this->suppliers_=suppliers;
+                this->suppliersCapacity_=suppliersCapacity;
+                this->suppliersDemand_=suppliersDemand;
                 this->bids_=bids;
                 this->clearance_volume_=clearance_volume;
                 this->clearance_price_=clearance_price;
@@ -42,14 +44,24 @@ namespace Applications
                 this->bids_=bids;
             };
             
-            Utils::List<Shares::StandardShare> * GeneralAuctionResponse::getSuppliers()
+            Utils::List<Shares::StandardShare> * GeneralAuctionResponse::getSuppliersDemand()
             {
-                return this->suppliers_;
+                return this->suppliersDemand_;
             };
             
-            void GeneralAuctionResponse::setSuppiers(Utils::List<Shares::StandardShare> * suppliers)
+            void GeneralAuctionResponse::setSuppiersDemand(Utils::List<Shares::StandardShare> * suppliers)
             {
-                this->suppliers_=suppliers;
+                this->suppliersDemand_=suppliers;
+            };
+            
+            Utils::List<Shares::StandardShare> * GeneralAuctionResponse::getSuppliersCapacity()
+            {
+                return this->suppliersCapacity_;
+            };
+            
+            void GeneralAuctionResponse::setSuppiersCapacity(Utils::List<Shares::StandardShare> * suppliers)
+            {
+                this->suppliersCapacity_=suppliers;
             };
             
             Shares::StandardShare * GeneralAuctionResponse::getClearanceVolume()

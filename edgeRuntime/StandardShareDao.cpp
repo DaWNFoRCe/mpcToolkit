@@ -96,10 +96,10 @@ namespace Daos
             aux = strtok (NULL,Utilities::Constants::SERIALIZATION_SEPARATOR);
         }
        // share->setBits(NULL);
-        share->setPlayerId(std::atoi(splitedData[0].c_str()));
+        share->setPlayerId(atoi(splitedData[0].c_str()));
         //if(splitedData[1].size()>1) std::cout<<"Look this might be the problem "<<splitedData[1]<<"the end\n";
-        share->setValue(std::atol(splitedData[1].c_str()));// this is a long sized int, it can't be translated with atoi 
-        share->setOperationId(std::atoi(splitedData[2].c_str()));
+        share->setValue(atol(splitedData[1].c_str()));// this is a long sized int, it can't be translated with atoi 
+        share->setOperationId(atoi(splitedData[2].c_str()));
         if (i==0) {
             return NULL;
         }

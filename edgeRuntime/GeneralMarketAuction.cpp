@@ -255,7 +255,7 @@ namespace Applications
 
             
             
-            Response::GeneralAuctionResponse * response = new Response::GeneralAuctionResponse(clearance_price,clearance_volume,suppliers_capacity,A);
+            Response::GeneralAuctionResponse * response = new Response::GeneralAuctionResponse(clearance_price,clearance_volume,suppliers_demand,suppliers_capacity,A);
                                                                                             
             
             return response;

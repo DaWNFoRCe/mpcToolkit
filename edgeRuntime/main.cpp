@@ -10,14 +10,14 @@
 
 //Generic Headers
 #include <iostream>
-#include <String>
+//#include <String>
 #include <cstdlib>
 #include <ctime>
 #include <sys/time.h>
 #include <pthread.h>
 
-#include <mach/mach.h>
-#include <mach/mach_time.h>
+//#include <mach/mach.h>
+//#include <mach/mach_time.h>
 
 //Library Headers
 #include <NTL/ZZ_pXFactoring.h>
@@ -154,7 +154,7 @@ int main(int argc, const char ** argv)
     {
         //time measurement initialization
 
-        double tInitial=  mach_absolute_time();
+//        double tInitial=  mach_absolute_time();
         
         //        for (int i=4; i<=256; i=i*2)
         for (int i=1; i<=1; i++)
@@ -166,10 +166,10 @@ int main(int argc, const char ** argv)
             
             std::cout<<"Clearance Price: "<< engine->presentShare(auctionResponse->getClearancePrice())<<"\n";
             std::cout<<"Clearance Volume: "<< engine->presentShare(auctionResponse->getClearanceVolume())<<"\n";
-            for (int i=0; i< auctionResponse->getSuppliers()->getLength(); i++)
+            for (int i=0; i< auctionResponse->getSuppliersDemand()->getLength(); i++)
             {
-                std::cout<<"Supplier Capacity Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliers()->get(i))<<"\n";
-                std::cout<<"Supplier Demand Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliers()->get(i))<<"\n";
+                std::cout<<"Supplier Capacity Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersCapacity()->get(i))<<"\n";
+                std::cout<<"Supplier Demand Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersDemand()->get(i))<<"\n";
             }
             
             rbids= auctionResponse->getBids();
@@ -183,20 +183,20 @@ int main(int argc, const char ** argv)
             
             
         }
-        double tFinal =mach_absolute_time();
+//        double tFinal =mach_absolute_time();
         
         
         static double timeConvert = 0.0;
         if ( timeConvert == 0.0 )
         {
-            mach_timebase_info_data_t timeBase;
-            (void)mach_timebase_info( &timeBase );
-            timeConvert = (double)timeBase.numer /
-            (double)timeBase.denom /
-            1000000000.0;
+//            mach_timebase_info_data_t timeBase;
+//            (void)mach_timebase_info( &timeBase );
+//            timeConvert = (double)timeBase.numer /
+//            (double)timeBase.denom /
+//            1000000000.0;
         }
         
-        std::cout <<(tFinal-tInitial)*timeConvert <<"\n";
+//        std::cout <<(tFinal-tInitial)*timeConvert <<"\n";
         std::cout <<engine->getTime() * timeConvert <<"\n";
         
         //std::cout<<"Comparitions: \n"<<engine->totalCom<<"\n";
