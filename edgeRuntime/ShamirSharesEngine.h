@@ -1508,7 +1508,8 @@ namespace SmcEngines
         
         //custom destructor
         ~ShamirSharesEngine();
-          double getTime();
+        //returns time on transmission
+        double getTime();
     };
   
 }

@@ -147,15 +147,15 @@ int main(int argc, const char ** argv)
     char* filename;
     asprintf(&filename, "%s%i%s", "bids-", player,".txt");
     bids =Applications::Auctions::Utilities::GeneralMarketAuctionUtil::readBids(filename, player, totalBids, suppliers);
-
+    
     
     
     
     for (int j=0; j<1; j++)
     {
         //time measurement initialization
-
- //       double tInitial=  mach_absolute_time();
+        
+        //       double tInitial=  mach_absolute_time();
         
         //        for (int i=4; i<=256; i=i*2)
         for (int i=1; i<=1; i++)
@@ -164,26 +164,29 @@ int main(int argc, const char ** argv)
             GeneralMarketAuction * auction = new GeneralMarketAuction(bids, bids->get(0)->getSupplier(),engine);
             
             std::cout<<"Start Comparison \n";
-	    prod= engine->lessEqualThanCatrinaModShares(shares->get(0), shares->get(1));
-	    std::cout<<"present Comparison: "<< engine->presentShare(prod)<<"\n";
-
-	    std::chrono::time_point<std::chrono::system_clock> begin, end;
-	    begin = std::chrono::high_resolution_clock::now();   
-            //std::clock_t begin = std::clock();         
+            prod= engine->lessEqualThanCatrinaModShares(shares->get(0), shares->get(1));
+            std::cout<<"present Comparison: "<< engine->presentShare(prod)<<"\n";
+            
+            std::chrono::time_point<std::chrono::system_clock> begin, end;
+            begin = std::chrono::high_resolution_clock::now();
+            
             Response::GeneralAuctionResponse * auctionResponse=  auction->optimizeAuction();
-            //std::clock_t end = std::clock();
+            
             end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> elapsed_seconds = end-begin;
-            //double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-	    std::cout<<"Results:\n";
-	    std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
-            //std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n";          
-            //std::cout<<"Clearance Price: "<< engine->presentShare(auctionResponse->getClearancePrice())<<"\n";
-            //std::cout<<"Clearance Volume: "<< engine->presentShare(auctionResponse->getClearanceVolume())<<"\n";
+            
+            std::cout<<"Results:\n";
+            std::cout<<"Comparitions: \n"<<engine->totalCom<<"\n";
+            std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
+            std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
+            std::cout << "Transmission time in Secs: "<< engine->getTime() << "s\n";
             prod = engine->greaterThanCatrinaModShares(shares->get(0), shares->get(1));
+            std::cout<<"Clearance Price: "<< engine->presentShare(auctionResponse->getClearancePrice())<<"\n";
+            std::cout<<"Clearance Volume: "<< engine->presentShare(auctionResponse->getClearanceVolume())<<"\n";
+            
             for (int i=0; i< auctionResponse->getSuppliersCapacity()->getLength(); i++)
             {
-		std::cout<<"enters to for: \n";
+                std::cout<<"enters to for: \n";
                 std::cout<<"Supplier Capacity Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersCapacity()->get(i))<<"\n";
                 std::cout<<"Supplier Demand Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersDemand()->get(i))<<"\n";
             }
@@ -193,32 +196,19 @@ int main(int argc, const char ** argv)
             {
                 std::cout<<"position: "<<i+1<<" bid: " << engine->presentShare(rbids->get(i)->getId())<<" price: "<<engine->presentShare(rbids->get(i)->getPrice()) << " volume: " <<engine->presentShare(rbids->get(i)->getQuantity()) <<"\n";
             }
-           // prod = shares->get(1);
-           //std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n"; 
+            
             
             
             
         }
-  //      double tFinal =mach_absolute_time();
+        //      double tFinal =mach_absolute_time();
         
         
-        static double timeConvert = 0.0;
-        if ( timeConvert == 0.0 )
-        {
-  //          mach_timebase_info_data_t timeBase;
-  //          (void)mach_timebase_info( &timeBase );
-  //          timeConvert = (double)timeBase.numer /
-  //         (double)timeBase.denom /
-  //         1000000000.0;
-        }
+
         
-  //      std::cout <<(tFinal-tInitial)*timeConvert <<"\n";
-  //      std::cout <<engine->getTime() * timeConvert <<"\n";
-        
-        //std::cout<<"Comparitions: \n"<<engine->totalCom<<"\n";
-        std::cout<<"Comparitions: \n"<<engine->totalCom<<"\n";
-        std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
-       //std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n"; 
+
+
+        //std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n";
     }
     
     //time measurement process

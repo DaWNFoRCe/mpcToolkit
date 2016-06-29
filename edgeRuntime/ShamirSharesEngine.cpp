@@ -15,8 +15,9 @@
 #include <NTL/ZZ_pX.h>
 
 #include <cstdlib>
-//#include <mach/mach.h>
-//#include <mach/mach_time.h>
+#include <chrono>
+#include <ctime>
+#include <sys/time.h>
 
 #include "MathUtil.h"
 
@@ -1521,7 +1522,8 @@ namespace SmcEngines
     //Broadcast a share towards all the players, method used for sync, and reconstructions
     Utils::List<Shares::StandardShare> * ShamirSharesEngine::transmitShare(Shares::StandardShare *  share)
     {
-        //double begin_time = mach_absolute_time();
+        std::chrono::time_point<std::chrono::system_clock> begin, end;
+        begin = std::chrono::high_resolution_clock::now();
 
         //player claims ownership of the share before transmission
         Shares::StandardShare * localShare= share->clone();
@@ -1540,8 +1542,9 @@ namespace SmcEngines
         delete  localShare;
         delete list;
 
-        
-       // ShamirSharesEngine::relativeTime += double( mach_absolute_time() - begin_time );
+        end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end-begin;
+        ShamirSharesEngine::relativeTime += elapsed_seconds.count();
         
         return aux;
     };
@@ -1549,7 +1552,9 @@ namespace SmcEngines
     //method used to share original value, not to bradcast shares
     Utils::List<Shares::StandardShare> * ShamirSharesEngine::shareValue(long value)
     {
-        //double tInitial =mach_absolute_time();
+        
+        std::chrono::time_point<std::chrono::system_clock> begin, end;
+        begin = std::chrono::high_resolution_clock::now();
         
         Utils::List<Shares::StandardShare> *list = new Utils::List<Shares::StandardShare>(players_->getLength());
         this->generator_->generateShares(value, players_->getLength(),list);
@@ -1559,7 +1564,9 @@ namespace SmcEngines
         
         Utilities::ShareUtil::destroyList(list);
     
-        //ShamirSharesEngine::relativeTime += (mach_absolute_time() - tInitial);
+        end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end-begin;
+        ShamirSharesEngine::relativeTime += elapsed_seconds.count();
         
         return aux;
         
