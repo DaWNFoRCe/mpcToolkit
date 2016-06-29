@@ -1374,10 +1374,7 @@ namespace SmcEngines
         // is minus one because the division is being performed out of the field c is negative
         
         delete res;
-        //if (totalCom%100==0)
-	//{
-	//    std::cout<<"Comparisons: "<<totalCom<<"\n";
-	//}        
+        
         return result;
     };
 
@@ -1521,7 +1518,7 @@ namespace SmcEngines
     //Broadcast a share towards all the players, method used for sync, and reconstructions
     Utils::List<Shares::StandardShare> * ShamirSharesEngine::transmitShare(Shares::StandardShare *  share)
     {
-        //double begin_time = mach_absolute_time();
+        double begin_time = mach_absolute_time();
 
         //player claims ownership of the share before transmission
         Shares::StandardShare * localShare= share->clone();
@@ -1541,7 +1538,7 @@ namespace SmcEngines
         delete list;
 
         
-       // ShamirSharesEngine::relativeTime += double( mach_absolute_time() - begin_time );
+        ShamirSharesEngine::relativeTime += double( mach_absolute_time() - begin_time );
         
         return aux;
     };
@@ -1549,7 +1546,7 @@ namespace SmcEngines
     //method used to share original value, not to bradcast shares
     Utils::List<Shares::StandardShare> * ShamirSharesEngine::shareValue(long value)
     {
-        //double tInitial =mach_absolute_time();
+        double tInitial =mach_absolute_time();
         
         Utils::List<Shares::StandardShare> *list = new Utils::List<Shares::StandardShare>(players_->getLength());
         this->generator_->generateShares(value, players_->getLength(),list);
@@ -1559,7 +1556,7 @@ namespace SmcEngines
         
         Utilities::ShareUtil::destroyList(list);
     
-        //ShamirSharesEngine::relativeTime += (mach_absolute_time() - tInitial);
+        ShamirSharesEngine::relativeTime += (mach_absolute_time() - tInitial);
         
         return aux;
         

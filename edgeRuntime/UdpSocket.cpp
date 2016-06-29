@@ -32,7 +32,7 @@ namespace Sockets
             
             if ( handleIn <= 0 )
             {
-                printf( "failed to create socket\n" );
+                std::cout<< "failed to create socket\n" ;
                 return;
             }
             
@@ -43,14 +43,14 @@ namespace Sockets
             
             if ( bind( handleIn, (const sockaddr*) &in_address, sizeof(sockaddr_in) ) < 0 ) //it binds the socket with the newly determined port
             {
-                printf( "failed to bind socket\n" );
+                std::cout<< "failed to bind socket\n" ;
                 return;
             }
             
             int nonBlocking = 1;
             if ( fcntl( handleIn, F_SETFL, O_NONBLOCK, nonBlocking ) == -1 ) // fcntl utility funcion that solves the issue of nonBLocking in the handle which is the binded socket
             {
-                printf( "failed to set non-blocking socket\n" );
+                std::cout<< "failed to set non-blocking socket\n" ;
                 return;
             }
             handleIn_=handleIn;    
@@ -65,7 +65,7 @@ namespace Sockets
             
             if ( handleOut <= 0 )
             {
-                printf( "failed to create socket\n" );
+                std::cout<< "failed to create socket\n";
                 return;
             }
             
@@ -78,7 +78,7 @@ namespace Sockets
             
             if ( bind( handleOut , (const sockaddr*) &out_address, sizeof(sockaddr_in) ) < 0 ) //it binds the socket with the newly determined port
             {
-                printf( "failed to bind socket\n" );
+                std::cout<< "failed to bind socket\n" ;
                 return;
             }
             
@@ -86,7 +86,7 @@ namespace Sockets
             
             if ( fcntl( handleOut, F_SETFL, O_NONBLOCK, nonBlocking ) == -1 ) // fcntl utility funcion that solves the issue of nonBLocking in the handle which is the binded socket
             {
-                printf( "failed to set non-blocking socket\n" );
+                std::cout<< "failed to set non-blocking socket\n" ;
                 return ;
             }
             handleOut_=handleOut;
@@ -105,6 +105,7 @@ namespace Sockets
     int Sockets::UdpSocket::sendTo(Players::StandardPlayer *player, std::string data, bool alerts)
     {
         
+	//alerts=true;
 
         //creates correct form of ip address
         unsigned int a = player->getIpAdress()[0];
@@ -124,18 +125,19 @@ namespace Sockets
         out_address.sin_port = htons( destination_port );
 
         //message is prepared to be sent
-        std::strcat((char *)data.c_str(),"\0");
+        strcat((char *)data.c_str(),"\0");
         char  content [256]="";
-        std::strcpy( (char *)content,data.c_str());
+        strcpy( (char *)content,data.c_str());
 
         //data is sent using edited data
+	// std::cout<< "content: " <<content <<" "<<out_address.sin_addr.s_addr <<"\n"; 
         int sent_bytes = sendto( handleOut_,(const char *) content, sizeof content,
                             0, (sockaddr*)&out_address, sizeof(sockaddr_in) );
     
         //control instructions in case of error
         if ( sent_bytes != sizeof(content))
         {
-            printf( "failed to send packet: return value = %d\n", sent_bytes );
+            std::cout<< "failed to send packet: return value = "<< sent_bytes <<"\n";
             return 0;
         }
         if (alerts) {
@@ -149,7 +151,7 @@ namespace Sockets
     char * Sockets::UdpSocket::receiveFrom(Players::StandardPlayer *player, bool alerts)
     {
     
-       
+       //alerts=true;
         unsigned char packet_data[256]="";// change this for an actual size -> revise future miss behavior
 
         //main loop to retreive information from media

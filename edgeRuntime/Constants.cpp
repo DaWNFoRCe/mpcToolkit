@@ -20,7 +20,7 @@ namespace Utilities
     const int  Constants::TCP_SOCKET=2;
     const char *  Constants::SERIALIZATION_SEPARATOR="%";
     const int Constants::LISTENER_THREADS=1;
-    const int Constants::MAX_LIST_SIZE=2050;
+    const int Constants::MAX_LIST_SIZE=2501;
     const int Constants::MAX_SIZE_RANDOM=10;
     const int Constants::OPERATION_COUNTER_DEFAULT_VALUE=0;
     const bool Constants::LISTENER_ALERTS=false;

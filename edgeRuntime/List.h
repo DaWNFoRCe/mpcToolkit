@@ -45,18 +45,21 @@ namespace Utils
             this->vect_=this->initializeVector(Utilities::Constants::MAX_LIST_SIZE,this->vect_);
             this->size_=Utilities::Constants::MAX_LIST_SIZE;
             this->length_=0;
+	    //List((Utilities::Constants::MAX_LIST_SIZE);	
             return;
         };
         
         //Sized List Constructor
         List(int size)
         {
-            //TODO:lookup on how new works with //std::vector<T*> * local(size);
-            this->vect_.resize(size);
+            //TODO:lookup on how new works with //
+            std::vector<T*>  local(size);
+            this->vect_ =local;
+	    //this->vect_.resize(size);
             this->vect_=this->initializeVector(size,this->vect_);
             this->length_=0;
             this->size_=size;
-            
+            return;            
         };
         
         //returns the number of elements that the list contains.

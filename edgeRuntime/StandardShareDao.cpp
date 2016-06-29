@@ -8,8 +8,10 @@
 
 //Generic Headers
 #include <iostream>
-#include <string>
+#include <stdio.h>
+#include <cstring>
 #include <vector>
+#include <cstdlib>
 
 //Custom Heathers
 #include "StandardShareDao.h"
@@ -82,20 +84,25 @@ namespace Daos
     
      Shares::StandardShare * StandardShareDao::buildDto(char * message)
     {
+	//std::cout<<"Look this might be the problem "<<message <<"\n";//<< " "<< splitedData[0]<<" "<<splitedData[1]<<" "<<splitedData[2] <<"the end\n";
         Shares::StandardShare * share = new Shares::StandardShare();
         std::string splitedData[3];//TODO define this as a constant parameter for StandardShareDao
         
         //TODO to put this into a method is 
-        char * aux = strtok (message,Utilities::Constants::SERIALIZATION_SEPARATOR);
+        char  aux_ [256];
+	strcpy(aux_,message);
+        char * aux = strtok (aux_,Utilities::Constants::SERIALIZATION_SEPARATOR);
         int i=0;
-
+        //std::cout<<Utilities::Constants::SERIALIZATION_SEPARATOR<< "Look this might be the problem "<<aux <<" "<< i<<"\n";
         while (aux != NULL)
         {
+	//std::cout<<"Look this might be the problem "<<aux <<" "<< i<<"\n";
             splitedData[i]=aux;
             i++;
             aux = strtok (NULL,Utilities::Constants::SERIALIZATION_SEPARATOR);
         }
        // share->setBits(NULL);
+	
         share->setPlayerId(std::atoi(splitedData[0].c_str()));
         //if(splitedData[1].size()>1) std::cout<<"Look this might be the problem "<<splitedData[1]<<"the end\n";
         share->setValue(std::atol(splitedData[1].c_str()));// this is a long sized int, it can't be translated with atoi 
