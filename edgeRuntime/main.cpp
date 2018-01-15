@@ -106,7 +106,7 @@ int main(int argc, const char ** argv)
     int localAddress[]= {10,33,137,40};
     int externalAddress[]={127,0,0,1}; //{192,168,1,5};//{130,104,59,120};//{130,104,59,120};
     //int localAddress[]= {127,0,0,1};
-    std::cout<< "The current player is: "<< player << " and his secret is: "<< secret<<"\n";
+    std::cout<< "The current player is: "<< player << " and his input secret share is: "<< secret<<"\n";
     
     Players::StandardPlayer * p1=new Players::StandardPlayer(1,3001,localHome);
     Players::StandardPlayer * p2=new Players::StandardPlayer(2,3002,localHome);
@@ -151,17 +151,17 @@ int main(int argc, const char ** argv)
     
     
     
-    for (int j=0; j<1; j++)
+    for (int j=0; j<1000; j++)
     {
 
         for (int i=1; i<=1; i++)
         {
+            std::cout<<"Start resharing \n";
+            engine->shareValue(secret);
+           
+            prod= engine->substract(engine->multiply(2,shares->get(0)), (shares->get(1)));//engine->lessEqualThanCatrinaModShares(shares->get(0), shares->get(1));
             
-            GeneralMarketAuction * auction = new GeneralMarketAuction(bids, bids->get(0)->getSupplier(),engine);
-            
-            std::cout<<"Start Comparison \n";
-            prod= engine->lessEqualThanCatrinaModShares(shares->get(0), shares->get(1));
-            std::cout<<"present Comparison: "<< engine->presentShare(prod)<<"\n";
+            std::cout<<"present new reconstruction: "<< engine->presentShare(prod)<<"\n";
             
             std::chrono::time_point<std::chrono::system_clock> begin, end;
             begin = std::chrono::high_resolution_clock::now();
