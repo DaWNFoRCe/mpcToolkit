@@ -140,7 +140,7 @@ int main(int argc, const char ** argv)
     
     
     //bids
-    int totalBids=2500;
+    int totalBids=200;
     int suppliers =10;
     Utils::List<Bids::ReducedBid> *rbids;
     Utils::List<Bids::GeneralMarketBid> * bids; //= new     Utils::List<Bids::StandardBid>();
@@ -153,11 +153,7 @@ int main(int argc, const char ** argv)
     
     for (int j=0; j<1; j++)
     {
-        //time measurement initialization
-        
-        //       double tInitial=  mach_absolute_time();
-        
-        //        for (int i=4; i<=256; i=i*2)
+
         for (int i=1; i<=1; i++)
         {
             
@@ -170,7 +166,7 @@ int main(int argc, const char ** argv)
             std::chrono::time_point<std::chrono::system_clock> begin, end;
             begin = std::chrono::high_resolution_clock::now();
             
-            Response::GeneralAuctionResponse * auctionResponse=  auction->optimizeAuction();
+            //Response::GeneralAuctionResponse * auctionResponse=  auction->optimizeAuction();
             
             end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> elapsed_seconds = end-begin;
@@ -180,43 +176,31 @@ int main(int argc, const char ** argv)
             std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
             std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
             std::cout << "Transmission time in Secs: "<< engine->getTime() << "s\n";
-            prod = engine->greaterThanCatrinaModShares(shares->get(0), shares->get(1));
-            std::cout<<"Clearance Price: "<< engine->presentShare(auctionResponse->getClearancePrice())<<"\n";
-            std::cout<<"Clearance Volume: "<< engine->presentShare(auctionResponse->getClearanceVolume())<<"\n";
+           // prod = engine->greaterThanCatrinaModShares(shares->get(0), shares->get(1));
+           // std::cout<<"Clearance Price: "<< engine->presentShare(auctionResponse->getClearancePrice())<<"\n";
+           // std::cout<<"Clearance Volume: "<< engine->presentShare(auctionResponse->getClearanceVolume())<<"\n";
             
-            for (int i=0; i< auctionResponse->getSuppliersCapacity()->getLength(); i++)
-            {
-                std::cout<<"enters to for: \n";
-                std::cout<<"Supplier Capacity Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersCapacity()->get(i))<<"\n";
-                std::cout<<"Supplier Demand Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersDemand()->get(i))<<"\n";
-            }
+            //for (int i=0; i< auctionResponse->getSuppliersCapacity()->getLength(); i++)
+            //{
+            //    std::cout<<"enters to for: \n";
+            //    std::cout<<"Supplier Capacity Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersCapacity()->get(i))<<"\n";
+            //    std::cout<<"Supplier Demand Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersDemand()->get(i))<<"\n";
+            //}
             
-            rbids= auctionResponse->getBids();
-            for(int i=0;i<rbids->getLength();i++)
-            {
-                std::cout<<"position: "<<i+1<<" bid: " << engine->presentShare(rbids->get(i)->getId())<<" price: "<<engine->presentShare(rbids->get(i)->getPrice()) << " volume: " <<engine->presentShare(rbids->get(i)->getQuantity()) <<"\n";
-            }
+            //rbids= auctionResponse->getBids();
+            //for(int i=0;i<rbids->getLength();i++)
+            //{
+            //    std::cout<<"position: "<<i+1<<" bid: " << engine->presentShare(rbids->get(i)->getId())<<" price: "<<engine->presentShare(rbids->get(i)->getPrice()) << " volume: " <<engine->presentShare(rbids->get(i)->getQuantity()) <<"\n";
+            //}
             
             
             
             
         }
-        //      double tFinal =mach_absolute_time();
-        
-        
 
-        
-
-
-        //std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n";
     }
     
-    //time measurement process
-    //gettimeofday(&tFinal, NULL);
-    //int tmElp=(tFinal.tv_sec - tInitial.tv_sec) * 1000.0;
-    //tmElp += (tFinal.tv_usec - tInitial.tv_usec) / 1000.0;
-    //std::cout<<"total time elapsed: " <<tmElp <<"\n";
-    
+
     
     //Process to Open Shares
     Utils::List<Shares::StandardShare> * localOpenShares= new  Utils::List<Shares::StandardShare>(1);
