@@ -15,7 +15,7 @@
 #include <ctime>
 #include <sys/time.h>
 #include <pthread.h>
-#include <chrono>
+#include <math.h>
 
 //#include <mach/mach.h>
 //#include <mach/mach_time.h>
@@ -106,7 +106,7 @@ int main(int argc, const char ** argv)
     int localAddress[]= {10,33,137,40};
     int externalAddress[]={127,0,0,1}; //{192,168,1,5};//{130,104,59,120};//{130,104,59,120};
     //int localAddress[]= {127,0,0,1};
-    std::cout<< "The current player is: "<< player << " and his input secret share is: "<< secret<<"\n";
+    std::cout<< "The current player is: "<< player << " and his secret is: "<< secret<<"\n";
     
     Players::StandardPlayer * p1=new Players::StandardPlayer(1,3001,localHome);
     Players::StandardPlayer * p2=new Players::StandardPlayer(2,3002,localHome);
@@ -128,101 +128,72 @@ int main(int argc, const char ** argv)
     //first value sharing
     shares=engine->shareValue(secret);
     
-    
-    
     //Algorithm variable declaration
     Shares::StandardShare * prod=NULL;
     
     
-    
-    //markets
-    
-    
-    
-    //bids
-    int totalBids=200;
-    int suppliers =10;
-    Utils::List<Bids::ReducedBid> *rbids;
-    Utils::List<Bids::GeneralMarketBid> * bids; //= new     Utils::List<Bids::StandardBid>();
-    char* filename;
-    asprintf(&filename, "%s%i%s", "bids-", player,".txt");
-    bids =Applications::Auctions::Utilities::GeneralMarketAuctionUtil::readBids(filename, player, totalBids, suppliers);
-    
-    
-    
-    
-    for (int j=0; j<1000; j++)
+    for (int j=0; j<1; j++)
     {
+        //times for key generation
+        //time measurement initialization   
+        std::cout<<"Start Key generation \n";
+        std::clock_t begin = std::clock();         
 
-        for (int i=1; i<=1; i++)
+        for (int i=0; i<1000; i++)
         {
-            std::cout<<"Start resharing \n";
-            engine->shareValue(secret);
+            
+
+            Shares::StandardShare * key = engine->generateShareRandomNumber();
+            long g = 1;
+            
+            long l_alpha=1; 
+            if(player==1)
+            {
+                l_alpha=1;
+            }
+            else if (player==2)
+            {
+                l_alpha=1;
+            }
+            else
+            {
+                l_alpha=1;
+            }
+
+            g= pow(g,l_alpha*key->getValue());
+            Utils::List<Shares::StandardShare> * p_key_array = engine->shareValue(g);
+            Shares::StandardShare * p_key = engine->multiply(engine->multiply(p_key_array->get(0),p_key_array->get(1)),p_key_array->get(2));
+            long p_p_key =engine->presentShare(p_key);
+
+            delete p_key_array;
+            delete p_key;
            
-            prod= engine->substract(engine->multiply(2,shares->get(0)), (shares->get(1)));//engine->lessEqualThanCatrinaModShares(shares->get(0), shares->get(1));
-            
-            std::cout<<"present new reconstruction: "<< engine->presentShare(prod)<<"\n";
-            
-            std::chrono::time_point<std::chrono::system_clock> begin, end;
-            begin = std::chrono::high_resolution_clock::now();
-            
-            //Response::GeneralAuctionResponse * auctionResponse=  auction->optimizeAuction();
-            
-            end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed_seconds = end-begin;
-            
-            std::cout<<"Results:\n";
-            std::cout<<"Comparitions: \n"<<engine->totalCom<<"\n";
-            std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
-            std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
-            std::cout << "Transmission time in Secs: "<< engine->getTime() << "s\n";
-           // prod = engine->greaterThanCatrinaModShares(shares->get(0), shares->get(1));
-           // std::cout<<"Clearance Price: "<< engine->presentShare(auctionResponse->getClearancePrice())<<"\n";
-           // std::cout<<"Clearance Volume: "<< engine->presentShare(auctionResponse->getClearanceVolume())<<"\n";
-            
-            //for (int i=0; i< auctionResponse->getSuppliersCapacity()->getLength(); i++)
-            //{
-            //    std::cout<<"enters to for: \n";
-            //    std::cout<<"Supplier Capacity Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersCapacity()->get(i))<<"\n";
-            //    std::cout<<"Supplier Demand Si "<<i+1<<": "<< engine->presentShare(auctionResponse->getSuppliersDemand()->get(i))<<"\n";
-            //}
-            
-            //rbids= auctionResponse->getBids();
-            //for(int i=0;i<rbids->getLength();i++)
-            //{
-            //    std::cout<<"position: "<<i+1<<" bid: " << engine->presentShare(rbids->get(i)->getId())<<" price: "<<engine->presentShare(rbids->get(i)->getPrice()) << " volume: " <<engine->presentShare(rbids->get(i)->getQuantity()) <<"\n";
-            //}
-            
-            
-            
-            
         }
 
-    }
-    
+        std::clock_t end = std::clock();
+        double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;             
+        std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n"; 
+         
+        //times for repair
+        //time measurement initialization   
+        std::cout<<"Start Repair \n";
+        begin = std::clock();         
+        for (int i=0;i<1000;i++)
+        {
+            delete shares;
+            shares=engine->shareValue(secret);
+            prod= engine->substract(engine->multiply(shares->get(0), long(2)), (shares->get(1)));//engine->lessEqualThanCatrinaModShares(shares->get(0), shares->get(1));
+        }
+        end = std::clock();
+        elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;             
+        std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n"; 
+         
+        std::cout<<"present new reconstruction: "<< engine->presentShare(prod)<<"\n";              
 
-    
-    //Process to Open Shares
-    Utils::List<Shares::StandardShare> * localOpenShares= new  Utils::List<Shares::StandardShare>(1);
-    Utils::List<Utils::List<Shares::StandardShare> >* openShares=NULL;
-    std::vector<long> response;
-    localOpenShares->add(prod);//*(totalRan)
-    //std::cout<<"values: "<<greatThanToft->getValue()<<" "<<greatThanToft->getOperationId()<<" "<<greatThanToft->getPlayerId()<<"\n";
-    for (int i=0; i<1; i++) {
-        openShares=engine->syncGlobal(localOpenShares);
-        response = engine->reconstructShares(localOpenShares);//*(ranBin)
-        response = engine->reconstructShares(localOpenShares);
+        std::cout<<"Comparitions: \n"<<engine->totalCom<<"\n";
+        std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
     }
     
-    //printing information process
-    //std::cout<< "total transmission operations performed: "<< Buffers::EngineBuffers::operationCounter_<<"\n";
-    for (int i=0; i<openShares->get(0)->getLength(); i++)
-    {
-        std::cout<< "The Open Share from player: "<< i+1<<" is: "<<  openShares->get(0)->get(i)->getValue()  << "\n";
-        
-    };
-    //single response line:
-    std::cout<<"Response: on Multiplication: "<<engine->presentShare(prod)<<"\n";
     
     return 1;
     
