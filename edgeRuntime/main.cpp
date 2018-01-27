@@ -120,7 +120,7 @@ int main(int argc, const char ** argv)
     std::cout<< "the exit port is:" << list->get(player-1)->getPort()<<"\n";
     //Experimentation with Multithreading TODO: Migrate operation counter
     //Applications::Permutations::PermutationMatrix::multiThreading(list, player);
-    SmcEngines::ShamirSharesEngine *engine = new SmcEngines::ShamirSharesEngine(list->get(player-1),list,true);
+    SmcEngines::ShamirSharesEngine *engine = new SmcEngines::ShamirSharesEngine(list->get(player-1),list,true,true);
     Utils::List<Shares::StandardShare> *shares;
     
     

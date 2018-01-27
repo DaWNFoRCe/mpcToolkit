@@ -281,7 +281,7 @@ namespace SmcEngines
          <li>Build Exceptions for field management.
          </ul>
          */
-        ShamirSharesEngine(Players::StandardPlayer * player, Utils::List<Players::StandardPlayer>  * players, bool signed_);
+        ShamirSharesEngine(Players::StandardPlayer * player, Utils::List<Players::StandardPlayer>  * players, bool signed_, bool mode_big_p);
         Players::StandardPlayer * getPlayer();
         
         //Random number generation methods
