@@ -43,7 +43,7 @@ namespace SmcEngines
     
     //Configuration Methods Implementations
     
-    ShamirSharesEngine::ShamirSharesEngine(Players::StandardPlayer * player,  Utils::List<Players::StandardPlayer> * players, bool signed_)
+    ShamirSharesEngine::ShamirSharesEngine(Players::StandardPlayer * player,  Utils::List<Players::StandardPlayer> * players, bool signed_,bool mode_big_p)
     {
         //initialize engine varialbes
         this->player_ = player;
@@ -53,8 +53,20 @@ namespace SmcEngines
         this->p_=Utilities::Constants::SYSTEM_P;
         this->l_= Utilities::Constants::SYSTEM_L;
         this->k_=Utilities::Constants::SYSTEM_K;
-        std::cout<<"p "<< this->p_<<" "<<sizeof(long long)<<"\n";
-        NTL::ZZ_p::init(NTL::conv<NTL::ZZ>(this->p_));
+        this->mode_big_p_=mode_big_p;
+        this->big_p_=Utilities::Constants::SYSTEM_BIG_P;
+        if(!this->mode_big_p_)
+        {
+            std::cout<<"p "<< this->p_<<" "<<sizeof(long long)<<"\n";
+            NTL::ZZ_p::init(NTL::conv<NTL::ZZ>(this->p_));
+        }
+        else
+        {
+            std::cout<<"p "<< this->big_p_<<" "<<"\n";
+            NTL::ZZ_p::init(NTL::conv<NTL::ZZ>(this->big_p_));
+        }
+        
+        
         //std::cout<< "the result: "<< conv<ZZ_p>(2)*conv<ZZ_p>(2)<<"\n";
         //generates all alpha vectors that might be necessary to compare bit strings
         this->lAlphas_ = new vec_ZZ_p[this->nBits_];
@@ -1655,4 +1667,10 @@ namespace SmcEngines
         //return 1;
         return ShamirSharesEngine::relativeTime;
     };
+    
+    bool ShamirSharesEngine::is_big_p()
+    {
+        return this->mode_big_p;
+    }
+    
 }

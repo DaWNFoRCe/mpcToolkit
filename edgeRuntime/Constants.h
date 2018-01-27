@@ -8,6 +8,8 @@
 
 #ifndef edgeRuntime_Constants_h
 #define edgeRuntime_Constants_h
+#include <NTL/ZZ_p.h>
+#include <NTL/ZZ.h>
 
 namespace Utilities {
 
@@ -57,6 +59,7 @@ namespace Utilities {
         static const long SYSTEM_P;
         static const int SYSTEM_B;
         static const int SHAREMIND_CARRY;
+        static const NTL::ZZ_p SYSTEM_BIG_P;
         
         //Shamir Share Constants -for Toft comparison methods to work z+k+l(n) <<P
         static const int SYSTEM_L;

@@ -14,6 +14,8 @@
 #include "StandardPlayer.h"
 #include "StandardShareDao.h"
 #include "List.h"
+#include <NTL/ZZ.h>
+#include <NTL/ZZ_p.h>
 namespace ShareGenerators
 {
     /**
@@ -38,6 +40,9 @@ namespace ShareGenerators
 
         Players::StandardPlayer * player_; //local player
         long p_; //number of players
+        bool mode_big_p_;
+        NTL::ZZ_p big_p_;
+        
     public:
         
         /**
@@ -51,7 +56,7 @@ namespace ShareGenerators
          <li>Build Exceptions for non serializable data
          </ul>
          */
-        ShamirGenerator(Players::StandardPlayer * player, long p);
+        ShamirGenerator(Players::StandardPlayer * player, long p, bool mode_big_p, ZZ_p big_p);
         
         /**
          * @brief Generate shamir shares for this player

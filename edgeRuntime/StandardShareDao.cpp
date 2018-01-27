@@ -12,6 +12,8 @@
 #include <cstring>
 #include <vector>
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
 //Custom Heathers
 #include "StandardShareDao.h"
@@ -22,6 +24,8 @@
 #include "Constants.h"
 #include "IStandardSocket.h"
 
+#include <NTL/ZZ_p.h>
+#include <NTL/ZZ.h>
 
 namespace Daos 
 {
@@ -35,6 +39,12 @@ namespace Daos
             //this->socket_= new Sockets::UdpSocket(player);
         }
         this->alerts_=alerts;
+    };
+    
+    std::string StandardShareDao::zToString(const ZZ_p &z) {
+        std::stringstream buffer;
+        buffer << z;
+        return buffer.str();
     };
     
     Shares::StandardShare * StandardShareDao::obtainShareFromPlayer(Players::StandardPlayer * player)
@@ -51,21 +61,31 @@ namespace Daos
         return this->outSocket_->sendTo(player,serializedData,this->alerts_);
     };
     
+    
      char  * StandardShareDao::serializeStandardShare(Shares::StandardShare * share)
     {
         
-        char  shareId[256] ="";
-        char  shareValue[256]="";
-        char  operationId[256]="";
-        
+        char  shareId[1024] ="";
+        char  shareValue[1024]="";
+        char  operationId[1024]="";
         //Cast to string the values of the share
         snprintf(shareId,sizeof shareId, "%d",share->getPlayerId());
-
-        snprintf(shareValue,sizeof shareValue,"%ld", share->getValue());
+        if(share->getValue()==-1)
+        {
+            snprintf(shareValue,sizeof shareValue,"%ld", share->getValue());
+        }
+        else
+        {
+            std::stringstream buffer;
+            buffer << share->getValuep();
+            //shareValue=strdup(buffer.str().c_str());
+            //shareValue = NTL::conv<const char *>(share->getValuep());
+            snprintf(shareValue,sizeof shareValue,"%s", buffer.str().c_str());
+        }
         snprintf(operationId,sizeof operationId,"%d", share->getOperationId());
         
         //Concat the values of the share to be send
-        char  serializedShare[256]="";//= shareId;
+        char  serializedShare[1024]="";//= shareId;
         strcat(serializedShare,shareId);
         //delete shareId;
         strcat(serializedShare,Utilities::Constants::SERIALIZATION_SEPARATOR);
@@ -89,7 +109,7 @@ namespace Daos
         std::string splitedData[3];//TODO define this as a constant parameter for StandardShareDao
         
         //TODO to put this into a method is 
-        char  aux_ [256];
+        char  aux_ [1024];
 	strcpy(aux_,message);
         char * aux = strtok (aux_,Utilities::Constants::SERIALIZATION_SEPARATOR);
         int i=0;
@@ -107,6 +127,7 @@ namespace Daos
         //if(splitedData[1].size()>1) std::cout<<"Look this might be the problem "<<splitedData[1]<<"the end\n";
         share->setValue(std::atol(splitedData[1].c_str()));// this is a long sized int, it can't be translated with atoi 
         share->setOperationId(std::atoi(splitedData[2].c_str()));
+        share->setValuep(conv<ZZ_p>(splitedData[1].c_str()));
         if (i==0) {
             return NULL;
         }
@@ -123,5 +144,6 @@ namespace Daos
         this->alerts_=alerts;
     };
     
+
 
 }

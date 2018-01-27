@@ -41,6 +41,18 @@ namespace Shares{
     {
         this->value_=value;
     };
+    
+    //get shared value
+    ZZ_p StandardShare::getValuep()
+    {
+        return this->valuep_;
+    };
+    
+    //set shared value
+    void StandardShare::setValuep(NTL::ZZ_p valuep)
+    {
+        this->valuep_=valuep;
+    };
 
     //get player id
     int StandardShare::getPlayerId()

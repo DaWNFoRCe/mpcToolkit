@@ -160,7 +160,7 @@ int main(int argc, const char ** argv)
                 l_alpha=1;
             }
 
-            g= pow(g,l_alpha*key->getValue());
+            //g= pow(g,l_alpha*key->getValue());
             Utils::List<Shares::StandardShare> * p_key_array = engine->shareValue(g);
             Shares::StandardShare * p_key = engine->multiply(engine->multiply(p_key_array->get(0),p_key_array->get(1)),p_key_array->get(2));
             long p_p_key =engine->presentShare(p_key);

@@ -11,10 +11,13 @@
 
 //Generic Headers
 #include <iostream>
+#include <NTL/ZZ_p.h>
+#include <NTL/ZZ.h>
 
 //Custom Headers
 #include "List.h"
 
+using namespace NTL;
 namespace Shares
 {
     /**
@@ -35,7 +38,8 @@ namespace Shares
         int playerId_; //player id who wons the share
         int operationId_; //operation id where the share was generated
        // Utils::List<Shares::StandardShare> * bits_; //bit decomposition of the share (also in shared form)
-            
+        ZZ_p valuep_;
+        
     public:
         
         /**
@@ -62,6 +66,18 @@ namespace Shares
          @param value shared form of the value corresponding to a given player.
          */
         void setValue(long value);
+        
+        /**
+         @brief Simple Getter
+         @return value shared form of the value corresponding to a given player.
+         */
+        ZZ_p getValuep();
+        
+        /**
+         @brief Simple Setter
+         @param value shared form of the value corresponding to a given player.
+         */
+        void setValuep(ZZ_p value);
         
         /**
          @brief Simple Getter

@@ -10,6 +10,9 @@
 #define edgeRuntime_StandardShareDao_h
 //Generic Headers
 #include <iostream>
+#include <string>
+#include <NTL/ZZ_p.h>
+#include <NTL/ZZ.h>
 
 //Custom Headers
 #include "StandardShare.h"
@@ -130,6 +133,7 @@ namespace Daos
          @param alerts activates/deactivates alerts
          */
         void setAlerts(bool alerts);
+        std::string zToString(const ZZ_p &z);
         
     };
 }

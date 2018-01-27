@@ -26,13 +26,15 @@ namespace ShareGenerators
     //Method implementation of ShamirGenerator
     
     //Constructor
-    ShareGenerators::ShamirGenerator::ShamirGenerator(Players::StandardPlayer * player, long p)
+    ShareGenerators::ShamirGenerator::ShamirGenerator(Players::StandardPlayer * player, long p, bool mode_big_p, ZZ_p big_p)
     {
         //Initialize the Random number generator's seed using the system clocks
         srand((unsigned)time(0));
         //Initialize variables
         player_=player;
         this->p_=p;
+        this->mode_big_p_ = mode_big_p;
+        this->big_p_=big_p;
     };
     
     //Destructor
@@ -44,7 +46,15 @@ namespace ShareGenerators
     int ShamirGenerator::generateShares(long secret, int players, Utils::List<Shares::StandardShare> *list)
     {
         //Gets the slope for the equation randomically
-        ZZ_p slope= conv<ZZ_p>(rand()% this->p_-1);
+        ZZ_p slope;
+        if (!this->mode_big_p_)
+        {
+          slope= conv<ZZ_p>(rand()% this->p_-1);
+        }
+        else
+        {
+            ZZ_p slope= conv<ZZ_p>(RandomBnd(conv<ZZ>(this->big_p_)));
+        }
         //TODO: The process to obtain the shares should be based on the T-1 paradigm.
         // hence the construction of the shares will depend on the number of players. there is a formula to do that to build polinomials of n deegree.
         for (ZZ i=conv<ZZ>(0); i< players;i++)
@@ -52,9 +62,9 @@ namespace ShareGenerators
             //creates the share TODO: take the process to the constructor
             Shares::StandardShare * aux =new Shares::StandardShare();
             
-            aux->setPlayerId(player_->getPlayer());            
-            aux->setValue(conv<long>(slope*(conv<ZZ_p>(i)+ conv<ZZ_p>(1)) +conv<ZZ_p>(secret) ));
-
+            aux->setPlayerId(player_->getPlayer());
+            aux->setValuep(slope*(conv<ZZ_p>(i)+ conv<ZZ_p>(1)) +conv<ZZ_p>(secret));
+            aux->setValue(conv<long>(slope*(conv<ZZ_p>(i)+ conv<ZZ_p>(1)) +conv<ZZ_p>(secret)));
             list->add(aux);
             
         } 

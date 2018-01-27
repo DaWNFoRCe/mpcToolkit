@@ -58,7 +58,8 @@ namespace SmcEngines
         int k_;  //Security parameter for comparison methods
         vec_ZZ_p alphas_;  //Alpha coefficients for lagrangian interpolation for \cite LT13
         vec_ZZ_p * lAlphas_; //Alpha coefficients for lagrangian interpolations
-        
+        bool mode_big_p_;
+        ZZ_p big_p_;
         
         //Method Implementation of ShamirSharesEngine
         
@@ -263,6 +264,7 @@ namespace SmcEngines
         
     public:
         int totalCom=0;
+        bool is_gib_p();
         //Constructors
         
         /**
@@ -1510,6 +1512,7 @@ namespace SmcEngines
         ~ShamirSharesEngine();
         //returns time on transmission
         double getTime();
+       
     };
   
 }
