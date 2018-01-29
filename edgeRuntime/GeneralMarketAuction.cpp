@@ -22,7 +22,7 @@
 #include "IExchangable.h"
 #include "MathUtil.h"
 #include <ctime>
-#include <chrono>
+//#include <chrono>
 
 namespace Applications
 {
@@ -155,29 +155,29 @@ namespace Applications
             std::cout<<"Starting Sorting"<<"\n";
             
             //sortingi
-            std::chrono::time_point<std::chrono::system_clock> begin, end;
-            begin = std::chrono::high_resolution_clock::now();
+            //std::chrono::time_point<std::chrono::system_clock> begin, end;
+            //begin = std::chrono::high_resolution_clock::now();
             this->quickSortBids(localBids);
-            end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed_seconds = end-begin;
-            std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
+            //end = std::chrono::high_resolution_clock::now();
+            //std::chrono::duration<double> elapsed_seconds = end-begin;
+            //std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
             
             //delta calculation
             std::cout<<"Finishes Sorting - Starts Delta Calculation"<<"\n";
-            begin = std::chrono::high_resolution_clock::now();
+            //begin = std::chrono::high_resolution_clock::now();
             for (int i =0; i< localBids->getLength(); i++) {
                 Shares::StandardShare * aux = this->engine_->multiply(localBids->get(i)->getDemand(),localBids->get(i)->getQuantity());
                 delta= this->engine_->addTo(delta, aux);
                 delete aux;
             }
-            end = std::chrono::high_resolution_clock::now();
-            elapsed_seconds = end-begin;
-            std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
+            //end = std::chrono::high_resolution_clock::now();
+            //elapsed_seconds = end-begin;
+            //std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
          
             //start of the algorithm
             std::cout<<"Delta Calcultation Finished, Delta of:"<<engine_->presentShare(delta)<<" - Starting  Auction"<<"\n";
             int  counter =0;
-            begin = std::chrono::high_resolution_clock::now();
+            //begin = std::chrono::high_resolution_clock::now();
             //start of the algorithm
             while(localBids->getLength()>0)
             {
@@ -230,14 +230,14 @@ namespace Applications
                 counter++;
             }
 
-            end = std::chrono::high_resolution_clock::now();
-            elapsed_seconds = end-begin;
-            std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
+            //end = std::chrono::high_resolution_clock::now();
+            //elapsed_seconds = end-begin;
+            //std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
 
             
             //random permutation
             std::cout<<"Starting Random Permutation"<<"\n";
-            begin = std::chrono::high_resolution_clock::now();
+            //begin = std::chrono::high_resolution_clock::now();
             int round2Power = ::Utilities::MathUtil::pow2roundup(A->getLength());
             std::cout<< "roundPower: "<< round2Power <<"\n";
             Utils::List<Bids::IExchangable> * permutation = new Utils::List<Bids::IExchangable> (round2Power);
@@ -257,9 +257,9 @@ namespace Applications
             
             Utils::List<Bids::IExchangable> * nPermutation =  permutator->permute(permutation);
 
-            end = std::chrono::high_resolution_clock::now();
-            elapsed_seconds = end-begin;
-            std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
+            //end = std::chrono::high_resolution_clock::now();
+            //elapsed_seconds = end-begin;
+            //std::cout << "Duration in Secs: "<< elapsed_seconds.count() << "s\n";
 
 
             std::cout<<"Start Bids Allocation \n";

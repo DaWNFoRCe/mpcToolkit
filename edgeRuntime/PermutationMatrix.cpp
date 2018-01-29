@@ -26,7 +26,7 @@ namespace Applications
         {
             PermutationMatrix::sharesList = new Utils::List<Shares::StandardShare>();
             
-            SmcEngines::ShamirSharesEngine *engine = new SmcEngines::ShamirSharesEngine(players->get(player-1),players,true);
+            SmcEngines::ShamirSharesEngine *engine = new SmcEngines::ShamirSharesEngine(players->get(player-1),players,true, true);
             Utils::List<Players::StandardPlayer> * players2 = new Utils::List<Players::StandardPlayer> (3);
             
             for (int i =0; i<3; i++)
@@ -34,7 +34,7 @@ namespace Applications
                 players2->add(new Players::StandardPlayer( players->get(i)->getPlayer(), players->get(i)->getPort()+1000, players->get(i)->getIpAdress()));
             }
             
-            SmcEngines::ShamirSharesEngine *engine2 = new SmcEngines::ShamirSharesEngine(players->get(player-1),players2,true);
+            SmcEngines::ShamirSharesEngine *engine2 = new SmcEngines::ShamirSharesEngine(players->get(player-1),players2,true, true);
 
             pthread_t threads[2];
             int rc;

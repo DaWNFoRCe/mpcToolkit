@@ -42,8 +42,7 @@ namespace SmcEngines
        double ShamirSharesEngine::relativeTime=0;
     
     //Configuration Methods Implementations
-    
-    ShamirSharesEngine::ShamirSharesEngine(Players::StandardPlayer * player,  Utils::List<Players::StandardPlayer> * players, bool signed_,bool mode_big_p)
+    ShamirSharesEngine::ShamirSharesEngine(Players::StandardPlayer * player,  Utils::List<Players::StandardPlayer> * players, bool signed_, bool mode_big_p)
     {
         //initialize engine varialbes
         this->player_ = player;
@@ -54,7 +53,7 @@ namespace SmcEngines
         this->l_= Utilities::Constants::SYSTEM_L;
         this->k_=Utilities::Constants::SYSTEM_K;
         this->mode_big_p_=mode_big_p;
-        this->big_p_=Utilities::Constants::SYSTEM_BIG_P;
+        
         if(!this->mode_big_p_)
         {
             std::cout<<"p "<< this->p_<<" "<<sizeof(long long)<<"\n";
@@ -62,8 +61,9 @@ namespace SmcEngines
         }
         else
         {
-            std::cout<<"p "<< this->big_p_<<" "<<"\n";
-            NTL::ZZ_p::init(NTL::conv<NTL::ZZ>(this->big_p_));
+            std::cout<<"p "<< Utilities::Constants::SYSTEM_BIG_P<<" "<<"\n";
+            NTL::ZZ_p::init(Utilities::Constants::SYSTEM_BIG_P);
+            this->big_p_=Utilities::Constants::SYSTEM_BIG_P;
         }
         
         
@@ -77,7 +77,7 @@ namespace SmcEngines
         
         //initialize context objects
         this->shareManager_ = new Managers::SharesManager(player, players);
-        this->generator_= new ShareGenerators::ShamirGenerator(player,this->p_);
+        this->generator_= new ShareGenerators::ShamirGenerator(player,this->p_,this->is_big_p(),this->big_p_);
         
         //initialize application buffers
         for (int i=0;i<players_->getLength(); i++)
@@ -1670,7 +1670,7 @@ namespace SmcEngines
     
     bool ShamirSharesEngine::is_big_p()
     {
-        return this->mode_big_p;
+        return this->mode_big_p_;
     }
     
 }

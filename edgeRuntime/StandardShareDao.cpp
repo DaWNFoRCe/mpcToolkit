@@ -127,7 +127,7 @@ namespace Daos
         //if(splitedData[1].size()>1) std::cout<<"Look this might be the problem "<<splitedData[1]<<"the end\n";
         share->setValue(std::atol(splitedData[1].c_str()));// this is a long sized int, it can't be translated with atoi 
         share->setOperationId(std::atoi(splitedData[2].c_str()));
-        share->setValuep(conv<ZZ_p>(splitedData[1].c_str()));
+        share->setValuep(conv<ZZ_p>(conv<ZZ>(splitedData[1].c_str())));
         if (i==0) {
             return NULL;
         }

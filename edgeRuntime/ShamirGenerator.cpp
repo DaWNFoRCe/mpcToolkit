@@ -26,7 +26,7 @@ namespace ShareGenerators
     //Method implementation of ShamirGenerator
     
     //Constructor
-    ShareGenerators::ShamirGenerator::ShamirGenerator(Players::StandardPlayer * player, long p, bool mode_big_p, ZZ_p big_p)
+    ShareGenerators::ShamirGenerator::ShamirGenerator(Players::StandardPlayer * player, long p, bool mode_big_p, ZZ big_p)
     {
         //Initialize the Random number generator's seed using the system clocks
         srand((unsigned)time(0));
