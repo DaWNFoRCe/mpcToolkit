@@ -15,7 +15,7 @@
 #include <NTL/ZZ_pX.h>
 
 #include <cstdlib>
-#include <chrono>
+//#include <chrono>
 #include <ctime>
 #include <sys/time.h>
 
@@ -45,6 +45,7 @@ namespace SmcEngines
     ShamirSharesEngine::ShamirSharesEngine(Players::StandardPlayer * player,  Utils::List<Players::StandardPlayer> * players, bool signed_, bool mode_big_p)
     {
         //initialize engine varialbes
+        
         this->player_ = player;
         this->players_=players;
         this->signed_=signed_;
@@ -1534,8 +1535,8 @@ namespace SmcEngines
     //Broadcast a share towards all the players, method used for sync, and reconstructions
     Utils::List<Shares::StandardShare> * ShamirSharesEngine::transmitShare(Shares::StandardShare *  share)
     {
-        std::chrono::time_point<std::chrono::system_clock> begin, end;
-        begin = std::chrono::high_resolution_clock::now();
+       // std::chrono::time_point<std::chrono::system_clock> begin, end;
+       // begin = std::chrono::high_resolution_clock::now();
 
         //player claims ownership of the share before transmission
         Shares::StandardShare * localShare= share->clone();
@@ -1554,9 +1555,9 @@ namespace SmcEngines
         delete  localShare;
         delete list;
 
-        end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed_seconds = end-begin;
-        ShamirSharesEngine::relativeTime += elapsed_seconds.count();
+        //end = std::chrono::high_resolution_clock::now();
+        //std::chrono::duration<double> elapsed_seconds = end-begin;
+       // ShamirSharesEngine::relativeTime += elapsed_seconds.count();
         
         return aux;
     };
@@ -1565,8 +1566,8 @@ namespace SmcEngines
     Utils::List<Shares::StandardShare> * ShamirSharesEngine::shareValue(long value)
     {
         
-        std::chrono::time_point<std::chrono::system_clock> begin, end;
-        begin = std::chrono::high_resolution_clock::now();
+       // std::chrono::time_point<std::chrono::system_clock> begin, end;
+       // begin = std::chrono::high_resolution_clock::now();
         
         Utils::List<Shares::StandardShare> *list = new Utils::List<Shares::StandardShare>(players_->getLength());
         this->generator_->generateShares(value, players_->getLength(),list);
@@ -1576,9 +1577,9 @@ namespace SmcEngines
         
         Utilities::ShareUtil::destroyList(list);
     
-        end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed_seconds = end-begin;
-        ShamirSharesEngine::relativeTime += elapsed_seconds.count();
+       // end = std::chrono::high_resolution_clock::now();
+       // std::chrono::duration<double> elapsed_seconds = end-begin;
+       // ShamirSharesEngine::relativeTime += elapsed_seconds.count();
         
         return aux;
         

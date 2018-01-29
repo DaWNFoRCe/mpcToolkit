@@ -70,7 +70,7 @@ namespace Daos
         char  operationId[1024]="";
         //Cast to string the values of the share
         snprintf(shareId,sizeof shareId, "%d",share->getPlayerId());
-        if(share->getValue()==-1)
+        if(share->getOperationId()==-1)
         {
             snprintf(shareValue,sizeof shareValue,"%ld", share->getValue());
         }

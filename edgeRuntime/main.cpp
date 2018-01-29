@@ -139,7 +139,7 @@ int main(int argc, const char ** argv)
         std::cout<<"Start Key generation \n";
         std::clock_t begin = std::clock();         
 
-        for (int i=0; i<1000; i++)
+        for (int i=0; i<1; i++)
         {
             
 
@@ -178,7 +178,7 @@ int main(int argc, const char ** argv)
         //time measurement initialization   
         std::cout<<"Start Repair \n";
         begin = std::clock();         
-        for (int i=0;i<1000;i++)
+        for (int i=0;i<1;i++)
         {
             delete shares;
             shares=engine->shareValue(secret);
