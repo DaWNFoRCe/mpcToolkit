@@ -120,10 +120,10 @@ int main(int argc, const char ** argv)
     std::cout<< "the exit port is:" << list->get(player-1)->getPort()<<"\n";
     //Experimentation with Multithreading TODO: Migrate operation counter
     //Applications::Permutations::PermutationMatrix::multiThreading(list, player);
-    SmcEngines::ShamirSharesEngine *engine = new SmcEngines::ShamirSharesEngine(list->get(player-1),list,true,true);
+    //cout<< "gets here"<<"\n";
+    SmcEngines::ShamirSharesEngine *engine = new SmcEngines::ShamirSharesEngine(list->get(player-1),list,true,false);
     Utils::List<Shares::StandardShare> *shares;
-    
-    
+    //cout <<"passes here"<<"\n"; 
     //getchar();
     //first value sharing
     shares=engine->shareValue(secret);
@@ -131,15 +131,16 @@ int main(int argc, const char ** argv)
     //Algorithm variable declaration
     Shares::StandardShare * prod=NULL;
     
-    
+    std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
     for (int j=0; j<1; j++)
     {
         //times for key generation
         //time measurement initialization   
-        std::cout<<"Start Key generation \n";
+        std::cout<<"Start Key generation "<< j <<" \n";
         std::clock_t begin = std::clock();         
 
-        for (int i=0; i<1; i++)
+        //for (long i=0; i<pow(10,j+1); i++)
+        for (long i=0; i<100;i++)
         {
             
 
@@ -164,12 +165,12 @@ int main(int argc, const char ** argv)
             Utils::List<Shares::StandardShare> * p_key_array = engine->shareValue(g);
             Shares::StandardShare * p_key = engine->multiply(engine->multiply(p_key_array->get(0),p_key_array->get(1)),p_key_array->get(2));
             long p_p_key =engine->presentShare(p_key);
-
+	    if (i%100==0) std::cout<< "current i is: " <<i<< "\n";
             delete p_key_array;
             delete p_key;
            
         }
-
+        std::cout <<"Operations: "<<Buffers::EngineBuffers::operationCounter_<<"\n";
         std::clock_t end = std::clock();
         double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;             
         std::cout<<"Time in Seconds: "<< elapsed_secs<<"\n"; 
@@ -178,7 +179,7 @@ int main(int argc, const char ** argv)
         //time measurement initialization   
         std::cout<<"Start Repair \n";
         begin = std::clock();         
-        for (int i=0;i<1;i++)
+        for (long i=0;i<100;i++)
         {
             delete shares;
             shares=engine->shareValue(secret);

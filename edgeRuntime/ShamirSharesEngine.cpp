@@ -63,7 +63,8 @@ namespace SmcEngines
         else
         {
             std::cout<<"p "<< Utilities::Constants::SYSTEM_BIG_P<<" "<<"\n";
-            NTL::ZZ_p::init(Utilities::Constants::SYSTEM_BIG_P);
+	    NTL::ZZ_p::init(Utilities::Constants::SYSTEM_BIG_P);
+	    std::cout<<"passes trhough here"<< "\n";
             this->big_p_=Utilities::Constants::SYSTEM_BIG_P;
         }
         
@@ -75,23 +76,25 @@ namespace SmcEngines
         {
             this->lAlphas_[i-1]= VectorCopy(Utilities::MathUtil::multiplyLagrangePolynomials(1, i+1, 1),(i+1)+1);
         }
-        
+        //std::cout<<"is here then"<<"\n";
         //initialize context objects
         this->shareManager_ = new Managers::SharesManager(player, players);
         this->generator_= new ShareGenerators::ShamirGenerator(player,this->p_,this->is_big_p(),this->big_p_);
-        
+        //std::cout<<"is here then"<<"\n";
         //initialize application buffers
         for (int i=0;i<players_->getLength(); i++)
         {
             Buffers::EngineBuffers::syncBuffer_.push_back( NULL);
         }
-        
+        //std::cout<<"is here then"<<"\n";
         Buffers::EngineBuffers::workingBuffer_=new Utils::List<Shares::StandardShare>(this->players_->getLength());
         Buffers::EngineBuffers::nextOperationBuffer_=new Utils::List<Shares::StandardShare>(this->players_->getLength());
-        
+        //std::cout<<"is here then"<<"\n";
         //start listeners
         ShamirSharesEngine::listener_= new Listeners::SharesListener(this->player_,this->players_);
+	//std::cout<<"is here then"<<"\n"; 
         ShamirSharesEngine::listener_->startListner();
+	//std::cout<<"is here then"<<"\n";
     };
     
     Players::StandardPlayer * ShamirSharesEngine::getPlayer()

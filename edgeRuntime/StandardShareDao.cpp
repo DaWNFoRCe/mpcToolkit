@@ -113,6 +113,7 @@ namespace Daos
 	strcpy(aux_,message);
         char * aux = strtok (aux_,Utilities::Constants::SERIALIZATION_SEPARATOR);
         int i=0;
+	//std::cout<<"output: "<< message<<"\n";
         //std::cout<<Utilities::Constants::SERIALIZATION_SEPARATOR<< "Look this might be the problem "<<aux <<" "<< i<<"\n";
         while (aux != NULL)
         {
@@ -127,8 +128,15 @@ namespace Daos
         //if(splitedData[1].size()>1) std::cout<<"Look this might be the problem "<<splitedData[1]<<"the end\n";
         share->setValue(std::atol(splitedData[1].c_str()));// this is a long sized int, it can't be translated with atoi 
         share->setOperationId(std::atoi(splitedData[2].c_str()));
-        share->setValuep(conv<ZZ_p>(conv<ZZ>(splitedData[1].c_str())));
-        if (i==0) {
+	//std::cout<<"so now we are just here "<<share->getValue()<<" soo \n";
+       	if (share->getOperationId()!=0 && share->getValue()!=0 && share->getPlayerId()!=0)
+	{
+		//std::cout<<"funk"<<"\n";
+		share->setValuep(conv<ZZ_p>(conv<ZZ>(splitedData[1].c_str())));
+	}
+	//std::cout<<"doesnt get here"<<"\n";
+        if (i==0)
+	 {
             return NULL;
         }
         return share;
